@@ -8,12 +8,18 @@
   "sdkVersion": "3",
   "targetPlatforms": ["aplite", "basalt"],
   "watchapp": {
-    "watchface": false
+    "watchface": true
   },
   "appKeys": {
     "dummy": 0
   },
   "resources": {
-    "media": []
+    "media": [
+      {
+        "file": "images/background.png",
+        "name": "IMAGE_BACKGROUND",
+        "type": "png"
+      }
+    ]
   }
 }
