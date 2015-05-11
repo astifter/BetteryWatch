@@ -1,25 +1,29 @@
 {
-  "uuid": "7a16ac2f-6fa4-4749-ac00-b9b687ee0efd",
-  "shortName": "BetteryWatch",
-  "longName": "BetteryWatch",
-  "companyName": "MakeAwesomeHappen",
-  "versionCode": 1,
-  "versionLabel": "1.0",
-  "sdkVersion": "3",
-  "targetPlatforms": ["aplite", "basalt"],
-  "watchapp": {
-    "watchface": true
-  },
-  "appKeys": {
-    "dummy": 0
-  },
-  "resources": {
-    "media": [
-      {
-        "file": "images/background.png",
-        "name": "IMAGE_BACKGROUND",
-        "type": "png"
-      }
-    ]
-  }
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "andreas.neustifter@gmail.com",
+    "longName": "BetteryWatch",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "images/background.png",
+                "name": "IMAGE_BACKGROUND",
+                "type": "png"
+            }
+        ]
+    },
+    "sdkVersion": "3",
+    "shortName": "BetteryWatch",
+    "targetPlatforms": [
+        "aplite",
+        "basalt"
+    ],
+    "uuid": "3922f7e6-fb9f-4063-9b08-869bec12509d",
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": true
+    }
 }
