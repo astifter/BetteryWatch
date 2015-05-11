@@ -1,0 +1,19 @@
+{
+  "uuid": "7a16ac2f-6fa4-4749-ac00-b9b687ee0efd",
+  "shortName": "BetteryWatch",
+  "longName": "BetteryWatch",
+  "companyName": "MakeAwesomeHappen",
+  "versionCode": 1,
+  "versionLabel": "1.0",
+  "sdkVersion": "3",
+  "targetPlatforms": ["aplite", "basalt"],
+  "watchapp": {
+    "watchface": false
+  },
+  "appKeys": {
+    "dummy": 0
+  },
+  "resources": {
+    "media": []
+  }
+}
