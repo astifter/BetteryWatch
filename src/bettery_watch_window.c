@@ -1,6 +1,9 @@
 #include "bettery_watch_window.h"
+#include "watchface_base/logging_helper.h"
+#include "watchface_base/hw_handling.h"
 #include <pebble.h>
 
+static bool ui_updates_enabled = false;
 // BEGIN AUTO-GENERATED UI CODE; DO NOT MODIFY
 static Window *s_window;
 static GBitmap *s_res_image_background;
@@ -84,6 +87,51 @@ static void destroy_ui(void) {
 }
 // END AUTO-GENERATED UI CODE
 
+void update_time(void) {
+  LOG_FUNC();
+
+  if (!ui_updates_enabled) {
+      LOG(LOG_FACEUPDATE, "static void update_time(): not done, not enabled");
+      return;
+  }
+
+  time_t temp = time(NULL);
+  struct tm *tick_time = localtime(&temp);
+
+  LOG(LOG_FACEUPDATE, "static void update_time(): display plain time");
+  // Use a static (long lived) buffer for the numeric time.
+  static char time[] = "00:00";
+  // Write the current hours and minutes into the buffer, considerung the
+  // 12/24h style.
+  if(clock_is_24h_style() == true) {
+    strftime(time, sizeof("00:00"), "%H:%M", tick_time);
+  } else {
+    strftime(time, sizeof("00:00"), "%I:%M", tick_time);
+  }
+  // Display time in respective layer.
+  text_layer_set_text(s_timelayer, time);
+
+  int weekday = tick_time->tm_wday-1;
+  if (weekday < 0) weekday += 7;
+  LOG(LOG_FACEUPDATE, "static void update_time(): display date");
+  LOG_EXT(LOG_FACEUPDATE, "static void update_time(): day: %d", weekday);
+  LOG_EXT(LOG_FACEUPDATE, "static void update_time(): mday: %d", tick_time->tm_mday);
+  LOG_EXT(LOG_FACEUPDATE, "static void update_time(): month: %d", tick_time->tm_mon);
+  // Use a static (long lived) buffer for the numeric date.
+  static char date[80];
+  strftime(date, 80, "%a, %d. %b", tick_time);
+  // Display date in respective layer.
+  LOG(LOG_FACEUPDATE, "updating s_date_layer");
+  text_layer_set_text(s_datelayer, date);
+
+  // Fetch and print BlueTooth status information.
+  LOG(LOG_FACEUPDATE, "updating s_info1_layer");
+  text_layer_set_text(s_infolayer_1, bt_state_string);
+
+  LOG(LOG_FACEUPDATE, "updating s_infolayer_2");
+  text_layer_set_text(s_infolayer_2, battery_state_string());
+}
+
 static void handle_window_unload(Window* window) {
   destroy_ui();
 }
@@ -94,6 +142,9 @@ void show_bettery_watch_window(void) {
     .unload = handle_window_unload,
   });
   window_stack_push(s_window, true);
+
+  ui_updates_enabled = true;
+  update_time();
 }
 
 void hide_bettery_watch_window(void) {
