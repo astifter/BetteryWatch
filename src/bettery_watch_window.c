@@ -11,12 +11,11 @@ static TextLayer *s_timelayer;
 static TextLayer *s_daylayer;
 static TextLayer *s_datelayer;
 static TextLayer *s_infolayer_1;
-static TextLayer *s_textlayer_1;
+static TextLayer *s_infolayer_2;
 
 static void initialise_ui(void) {
   s_window = window_create();
   window_set_background_color(s_window, GColorClear);
-  window_set_fullscreen(s_window, true);
   
   s_res_image_background = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUND);
   s_res_bitham_42_light = fonts_get_system_font(FONT_KEY_BITHAM_42_LIGHT);
@@ -40,15 +39,17 @@ static void initialise_ui(void) {
   text_layer_set_background_color(s_daylayer, GColorClear);
   text_layer_set_text_color(s_daylayer, GColorWhite);
   text_layer_set_text(s_daylayer, "Mon");
+  text_layer_set_text_alignment(s_daylayer, GTextAlignmentCenter);
   text_layer_set_font(s_daylayer, s_res_roboto_condensed_21);
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_daylayer);
+  layer_set_hidden(text_layer_get_layer(s_daylayer), true);
   
   // s_datelayer
   s_datelayer = text_layer_create(GRect(5, 64, 134, 26));
   text_layer_set_background_color(s_datelayer, GColorClear);
   text_layer_set_text_color(s_datelayer, GColorWhite);
   text_layer_set_text(s_datelayer, "2.5.2015");
-  text_layer_set_text_alignment(s_datelayer, GTextAlignmentRight);
+  text_layer_set_text_alignment(s_datelayer, GTextAlignmentCenter);
   text_layer_set_font(s_datelayer, s_res_roboto_condensed_21);
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_datelayer);
   
@@ -57,16 +58,18 @@ static void initialise_ui(void) {
   text_layer_set_background_color(s_infolayer_1, GColorClear);
   text_layer_set_text_color(s_infolayer_1, GColorWhite);
   text_layer_set_text(s_infolayer_1, "Text layer");
+  text_layer_set_text_alignment(s_infolayer_1, GTextAlignmentCenter);
   text_layer_set_font(s_infolayer_1, s_res_roboto_condensed_21);
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_infolayer_1);
   
-  // s_textlayer_1
-  s_textlayer_1 = text_layer_create(GRect(5, 125, 134, 26));
-  text_layer_set_background_color(s_textlayer_1, GColorClear);
-  text_layer_set_text_color(s_textlayer_1, GColorWhite);
-  text_layer_set_text(s_textlayer_1, "Text layer");
-  text_layer_set_font(s_textlayer_1, s_res_roboto_condensed_21);
-  layer_add_child(window_get_root_layer(s_window), (Layer *)s_textlayer_1);
+  // s_infolayer_2
+  s_infolayer_2 = text_layer_create(GRect(5, 125, 134, 26));
+  text_layer_set_background_color(s_infolayer_2, GColorClear);
+  text_layer_set_text_color(s_infolayer_2, GColorWhite);
+  text_layer_set_text(s_infolayer_2, "Text layer");
+  text_layer_set_text_alignment(s_infolayer_2, GTextAlignmentCenter);
+  text_layer_set_font(s_infolayer_2, s_res_roboto_condensed_21);
+  layer_add_child(window_get_root_layer(s_window), (Layer *)s_infolayer_2);
 }
 
 static void destroy_ui(void) {
@@ -76,7 +79,7 @@ static void destroy_ui(void) {
   text_layer_destroy(s_daylayer);
   text_layer_destroy(s_datelayer);
   text_layer_destroy(s_infolayer_1);
-  text_layer_destroy(s_textlayer_1);
+  text_layer_destroy(s_infolayer_2);
   gbitmap_destroy(s_res_image_background);
 }
 // END AUTO-GENERATED UI CODE
