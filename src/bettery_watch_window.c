@@ -7,8 +7,9 @@ static bool ui_updates_enabled = false;
 // BEGIN AUTO-GENERATED UI CODE; DO NOT MODIFY
 static Window *s_window;
 static GBitmap *s_res_image_background;
-static GFont s_res_bitham_42_light;
+static GFont s_res_bitham_42_medium_numbers;
 static GFont s_res_roboto_condensed_21;
+static GFont s_res_gothic_18;
 static BitmapLayer *s_bitmaplayer_1;
 static TextLayer *s_timelayer;
 static TextLayer *s_daylayer;
@@ -21,8 +22,10 @@ static void initialise_ui(void) {
   window_set_background_color(s_window, GColorClear);
   
   s_res_image_background = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUND);
-  s_res_bitham_42_light = fonts_get_system_font(FONT_KEY_BITHAM_42_LIGHT);
   s_res_roboto_condensed_21 = fonts_get_system_font(FONT_KEY_ROBOTO_CONDENSED_21);
+  s_res_bitham_42_medium_numbers = fonts_get_system_font(FONT_KEY_BITHAM_42_MEDIUM_NUMBERS);
+  s_res_gothic_18 = fonts_get_system_font(FONT_KEY_GOTHIC_24);
+
   // s_bitmaplayer_1
   s_bitmaplayer_1 = bitmap_layer_create(GRect(0, 0, 144, 168));
   bitmap_layer_set_bitmap(s_bitmaplayer_1, s_res_image_background);
@@ -34,7 +37,7 @@ static void initialise_ui(void) {
   text_layer_set_text_color(s_timelayer, GColorWhite);
   text_layer_set_text(s_timelayer, "00:00");
   text_layer_set_text_alignment(s_timelayer, GTextAlignmentCenter);
-  text_layer_set_font(s_timelayer, s_res_bitham_42_light);
+  text_layer_set_font(s_timelayer, s_res_bitham_42_medium_numbers);
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_timelayer);
   
   // s_daylayer
@@ -62,7 +65,7 @@ static void initialise_ui(void) {
   text_layer_set_text_color(s_infolayer_1, GColorWhite);
   text_layer_set_text(s_infolayer_1, "Text layer");
   text_layer_set_text_alignment(s_infolayer_1, GTextAlignmentCenter);
-  text_layer_set_font(s_infolayer_1, s_res_roboto_condensed_21);
+  text_layer_set_font(s_infolayer_1, s_res_gothic_18);
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_infolayer_1);
   
   // s_infolayer_2
@@ -71,7 +74,7 @@ static void initialise_ui(void) {
   text_layer_set_text_color(s_infolayer_2, GColorWhite);
   text_layer_set_text(s_infolayer_2, "Text layer");
   text_layer_set_text_alignment(s_infolayer_2, GTextAlignmentCenter);
-  text_layer_set_font(s_infolayer_2, s_res_roboto_condensed_21);
+  text_layer_set_font(s_infolayer_2, s_res_gothic_18);
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_infolayer_2);
 }
 
