@@ -6,16 +6,18 @@
 static bool ui_updates_enabled = false;
 // BEGIN AUTO-GENERATED UI CODE; DO NOT MODIFY
 static Window *s_window;
-static GBitmap *s_res_image_background;
 static GFont s_res_bitham_42_medium_numbers;
 static GFont s_res_roboto_condensed_21;
 static GFont s_res_gothic_18;
-static BitmapLayer *s_bitmaplayer_1;
+
 static TextLayer *s_timelayer;
 static TextLayer *s_daylayer;
 static TextLayer *s_datelayer;
-static TextLayer *s_infolayer_1;
-static TextLayer *s_infolayer_2;
+static TextLayer *s_btlayer;
+static TextLayer *s_batterylayer;
+
+static GBitmap *s_res_image_background;
+static BitmapLayer *s_bitmaplayer_bg;
 
 static void initialise_ui(void) {
   s_window = window_create();
@@ -26,10 +28,10 @@ static void initialise_ui(void) {
   s_res_bitham_42_medium_numbers = fonts_get_system_font(FONT_KEY_BITHAM_42_MEDIUM_NUMBERS);
   s_res_gothic_18 = fonts_get_system_font(FONT_KEY_GOTHIC_24);
 
-  // s_bitmaplayer_1
-  s_bitmaplayer_1 = bitmap_layer_create(GRect(0, 0, 144, 168));
-  bitmap_layer_set_bitmap(s_bitmaplayer_1, s_res_image_background);
-  layer_add_child(window_get_root_layer(s_window), (Layer *)s_bitmaplayer_1);
+  // s_bitmaplayer_bg
+  s_bitmaplayer_bg = bitmap_layer_create(GRect(0, 0, 144, 168));
+  bitmap_layer_set_bitmap(s_bitmaplayer_bg, s_res_image_background);
+  layer_add_child(window_get_root_layer(s_window), (Layer *)s_bitmaplayer_bg);
   
   // s_timelayer
   s_timelayer = text_layer_create(GRect(5, 13, 134, 50));
@@ -59,33 +61,33 @@ static void initialise_ui(void) {
   text_layer_set_font(s_datelayer, s_res_roboto_condensed_21);
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_datelayer);
   
-  // s_infolayer_1
-  s_infolayer_1 = text_layer_create(GRect(5, 100, 134, 26));
-  text_layer_set_background_color(s_infolayer_1, GColorClear);
-  text_layer_set_text_color(s_infolayer_1, GColorWhite);
-  text_layer_set_text(s_infolayer_1, "Text layer");
-  text_layer_set_text_alignment(s_infolayer_1, GTextAlignmentCenter);
-  text_layer_set_font(s_infolayer_1, s_res_gothic_18);
-  layer_add_child(window_get_root_layer(s_window), (Layer *)s_infolayer_1);
+  // s_btlayer
+  s_btlayer = text_layer_create(GRect(5, 100, 134, 26));
+  text_layer_set_background_color(s_btlayer, GColorClear);
+  text_layer_set_text_color(s_btlayer, GColorWhite);
+  text_layer_set_text(s_btlayer, "Text layer");
+  text_layer_set_text_alignment(s_btlayer, GTextAlignmentCenter);
+  text_layer_set_font(s_btlayer, s_res_gothic_18);
+  layer_add_child(window_get_root_layer(s_window), (Layer *)s_btlayer);
   
-  // s_infolayer_2
-  s_infolayer_2 = text_layer_create(GRect(5, 125, 134, 26));
-  text_layer_set_background_color(s_infolayer_2, GColorClear);
-  text_layer_set_text_color(s_infolayer_2, GColorWhite);
-  text_layer_set_text(s_infolayer_2, "Text layer");
-  text_layer_set_text_alignment(s_infolayer_2, GTextAlignmentCenter);
-  text_layer_set_font(s_infolayer_2, s_res_gothic_18);
-  layer_add_child(window_get_root_layer(s_window), (Layer *)s_infolayer_2);
+  // s_batterylayer
+  s_batterylayer = text_layer_create(GRect(5, 125, 134, 26));
+  text_layer_set_background_color(s_batterylayer, GColorClear);
+  text_layer_set_text_color(s_batterylayer, GColorWhite);
+  text_layer_set_text(s_batterylayer, "Text layer");
+  text_layer_set_text_alignment(s_batterylayer, GTextAlignmentCenter);
+  text_layer_set_font(s_batterylayer, s_res_gothic_18);
+  layer_add_child(window_get_root_layer(s_window), (Layer *)s_batterylayer);
 }
 
 static void destroy_ui(void) {
   window_destroy(s_window);
-  bitmap_layer_destroy(s_bitmaplayer_1);
+  bitmap_layer_destroy(s_bitmaplayer_bg);
   text_layer_destroy(s_timelayer);
   text_layer_destroy(s_daylayer);
   text_layer_destroy(s_datelayer);
-  text_layer_destroy(s_infolayer_1);
-  text_layer_destroy(s_infolayer_2);
+  text_layer_destroy(s_btlayer);
+  text_layer_destroy(s_batterylayer);
   gbitmap_destroy(s_res_image_background);
 }
 // END AUTO-GENERATED UI CODE
@@ -129,10 +131,10 @@ void update_time(void) {
 
   // Fetch and print BlueTooth status information.
   LOG(LOG_FACEUPDATE, "updating s_info1_layer");
-  text_layer_set_text(s_infolayer_1, bt_state_string);
+  text_layer_set_text(s_btlayer, bt_state_string);
 
-  LOG(LOG_FACEUPDATE, "updating s_infolayer_2");
-  text_layer_set_text(s_infolayer_2, battery_state_string());
+  LOG(LOG_FACEUPDATE, "updating s_batterylayer");
+  text_layer_set_text(s_batterylayer, battery_state_string());
 }
 
 static void handle_window_unload(Window* window) {
