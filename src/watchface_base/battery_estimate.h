@@ -5,3 +5,5 @@
 void battery_estimate_init(void);
 void battery_estimate_update(BatteryChargeState current);
 char* battery_estimate_string(void);
+
+extern int battery_estimate_secs;

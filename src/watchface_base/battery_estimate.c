@@ -5,7 +5,7 @@
 #include "quicksort.h"
 
 static stringbuffer battery_estimate_sb;
-static int          battery_estimate_secs = -1;
+int battery_estimate_secs = -1;
 
 void battery_estimate_init(void) {
     LOG_FUNC();

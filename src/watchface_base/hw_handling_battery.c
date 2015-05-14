@@ -6,7 +6,7 @@
 #include "storage.h"
 
 // States and string descriptions of that states and the respective callbacks.
-static BatteryChargeState        battery_state;
+BatteryChargeState               battery_state;
 static stringbuffer              battery_state_sb;
 static hardware_changed_callback battery_state_changed_callback;
 

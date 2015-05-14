@@ -4,10 +4,10 @@
 #include "logging_helper.h"
 
 // States and string descriptions of that states and the respective callbacks.
-static bool               bt_state;
+bool                      bt_state;
 static stringbuffer       bt_state_sb;
 static hardware_changed_callback bt_state_changed_callback;
-char* bt_state_string;
+char*                     bt_state_string;
 
 // The hardware handlers operate after the same principle:
 // - The initializer reads the state directly, uses the handler to update the string description and registers the hw-callback handler.
