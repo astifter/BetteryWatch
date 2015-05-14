@@ -421,3 +421,19 @@ footer {
     color:#444;
   }
 }
+
+.columns { 
+  vertical-align: top; 
+  display: inline-block; 
+}
+.columns-col-1 { width: 30%; }
+.columns-col-2 { width: 69%; }
+
+@media screen and (max-width: 600px) { 
+  .columns { 
+    vertical-align: top; 
+    display: inline-block; 
+  }
+  .columns-col-1 { width: 100%; }
+  .columns-col-2 { width: 100%; } 
+}
