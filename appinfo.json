@@ -12,6 +12,31 @@
                 "file": "images/background.png",
                 "name": "IMAGE_BACKGROUND",
                 "type": "png"
+            },
+            {
+                "file": "images/bt_active.png",
+                "name": "IMAGE_BT_ACTIVE",
+                "type": "png"
+            },
+            {
+                "file": "images/bt_passive.png",
+                "name": "IMAGE_BT_PASSIVE",
+                "type": "png"
+            },
+            {
+                "file": "images/battery.png",
+                "name": "IMAGE_BATTERY",
+                "type": "png"
+            },
+            {
+                "file": "images/outbound.png",
+                "name": "IMAGE_OUTBOUND",
+                "type": "png"
+            },
+            {
+                "file": "images/inbound.png",
+                "name": "IMAGE_INBOUND",
+                "type": "png"
             }
         ]
     },
