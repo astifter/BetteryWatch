@@ -1,6 +1,9 @@
 #include "bettery_watch_window.h"
 #include "watchface_base/logging_helper.h"
 #include "watchface_base/hw_handling.h"
+#include "watchface_base/stringbuffer.h"
+#include "watchface_base/battery_estimate.h"
+#include "watchface_base/storage.h"
 #include <pebble.h>
 
 static bool ui_updates_enabled = false;
@@ -13,17 +16,35 @@ static GFont s_res_gothic_18;
 static TextLayer *s_timelayer;
 static TextLayer *s_daylayer;
 static TextLayer *s_datelayer;
+static TextLayer *s_outboundlayer;
+static TextLayer *s_inboundlayer;
 static TextLayer *s_btlayer;
 static TextLayer *s_batterylayer;
 
 static GBitmap *s_res_image_background;
 static BitmapLayer *s_bitmaplayer_bg;
 
+static GBitmap *s_res_image_bt_active;
+static GBitmap *s_res_image_bt_passive;
+static BitmapLayer *s_bitmaplayer_bt;
+static GBitmap *s_res_image_battery;
+static BitmapLayer *s_bitmaplayer_battery;
+static GBitmap *s_res_image_outbound;
+static BitmapLayer *s_bitmaplayer_outbound;
+static GBitmap *s_res_image_inbound;
+static BitmapLayer *s_bitmaplayer_inbound;
+
 static void initialise_ui(void) {
   s_window = window_create();
   window_set_background_color(s_window, GColorClear);
   
   s_res_image_background = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUND);
+  s_res_image_bt_active = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BT_ACTIVE);
+  s_res_image_bt_passive = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BT_PASSIVE);
+  s_res_image_battery = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BATTERY);
+  s_res_image_outbound = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_OUTBOUND);
+  s_res_image_inbound = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_INBOUND);
+
   s_res_roboto_condensed_21 = fonts_get_system_font(FONT_KEY_ROBOTO_CONDENSED_21);
   s_res_bitham_42_medium_numbers = fonts_get_system_font(FONT_KEY_BITHAM_42_MEDIUM_NUMBERS);
   s_res_gothic_18 = fonts_get_system_font(FONT_KEY_GOTHIC_24);
@@ -61,22 +82,57 @@ static void initialise_ui(void) {
   text_layer_set_font(s_datelayer, s_res_roboto_condensed_21);
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_datelayer);
   
+  // s_bitmaplayer_outbound
+  s_bitmaplayer_outbound = bitmap_layer_create(GRect(5, 110, 14, 14));
+  bitmap_layer_set_bitmap(s_bitmaplayer_outbound, s_res_image_outbound);
+  layer_add_child(window_get_root_layer(s_window), (Layer *)s_bitmaplayer_outbound);
+  
+  // s_outboundlayer
+  s_outboundlayer = text_layer_create(GRect(24, 100, 115, 26));
+  text_layer_set_background_color(s_outboundlayer, GColorClear);
+  text_layer_set_text_color(s_outboundlayer, GColorWhite);
+  text_layer_set_text(s_outboundlayer, "Text layer");
+  text_layer_set_font(s_outboundlayer, s_res_gothic_18);
+  layer_add_child(window_get_root_layer(s_window), (Layer *)s_outboundlayer);
+  
+  // s_bitmaplayer_inbound
+  s_bitmaplayer_inbound = bitmap_layer_create(GRect(5, 135, 14, 14));
+  bitmap_layer_set_bitmap(s_bitmaplayer_inbound, s_res_image_inbound);
+  layer_add_child(window_get_root_layer(s_window), (Layer *)s_bitmaplayer_inbound);
+  
+  // s_inboundlayer
+  s_inboundlayer = text_layer_create(GRect(24, 125, 115, 26));
+  text_layer_set_background_color(s_inboundlayer, GColorClear);
+  text_layer_set_text_color(s_inboundlayer, GColorWhite);
+  text_layer_set_text(s_inboundlayer, "Text layer");
+  text_layer_set_font(s_inboundlayer, s_res_gothic_18);
+  layer_add_child(window_get_root_layer(s_window), (Layer *)s_inboundlayer);
+
+  // s_bitmaplayer_bt
+  s_bitmaplayer_bt = bitmap_layer_create(GRect(125, 110, 14, 14));
+  layer_add_child(window_get_root_layer(s_window), (Layer *)s_bitmaplayer_bt);
+  
   // s_btlayer
-  s_btlayer = text_layer_create(GRect(5, 100, 134, 26));
+  s_btlayer = text_layer_create(GRect(5, 100, 115, 26));
   text_layer_set_background_color(s_btlayer, GColorClear);
   text_layer_set_text_color(s_btlayer, GColorWhite);
   text_layer_set_text(s_btlayer, "Text layer");
-  text_layer_set_text_alignment(s_btlayer, GTextAlignmentCenter);
   text_layer_set_font(s_btlayer, s_res_gothic_18);
+  text_layer_set_text_alignment(s_btlayer, GTextAlignmentRight);
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_btlayer);
   
+  // s_bitmaplayer_battery
+  s_bitmaplayer_battery = bitmap_layer_create(GRect(125, 135, 14, 14));
+  bitmap_layer_set_bitmap(s_bitmaplayer_battery, s_res_image_battery);
+  layer_add_child(window_get_root_layer(s_window), (Layer *)s_bitmaplayer_battery);
+  
   // s_batterylayer
-  s_batterylayer = text_layer_create(GRect(5, 125, 134, 26));
+  s_batterylayer = text_layer_create(GRect(5, 125, 115, 26));
   text_layer_set_background_color(s_batterylayer, GColorClear);
   text_layer_set_text_color(s_batterylayer, GColorWhite);
   text_layer_set_text(s_batterylayer, "Text layer");
-  text_layer_set_text_alignment(s_batterylayer, GTextAlignmentCenter);
   text_layer_set_font(s_batterylayer, s_res_gothic_18);
+  text_layer_set_text_alignment(s_batterylayer, GTextAlignmentRight);
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_batterylayer);
 }
 
