@@ -29,18 +29,42 @@
       </header>
       <section>
         <h3>The Watchface</h3>
-          <p>Besides the usual basic watchface features (like time and date) the Bluetooth status and battery percentage is shown.
-          But the most important feature is the two times shown on the left: the time since fully charged and the estimated time to an empty Pebble.</p>
+          <p>Besides the usual basic watchface features (like time and date)
+          the Bluetooth status and battery percentage is shown.  But the most
+          important feature is the two times shown on the left: the time since
+          fully charged and the estimated time to an empty Pebble. 
+          The color scheme reflects Pebble Time's timeline colors for past and
+          future events.
+          </p>
         <h3>The Time Since Full</h3>
           <p>
             <div class="columns columns-col-1">
               <img src="resources/pebble-screenshot_basalt.png"/>
             </div>
             <div class="columns columns-col-2">
-              The icon with the arrow pointing away from the wall plug symbolizes the unplugging of the Pebble.
-              The time is only reset when the Pebble is plugged in and fully charged, I recommend charging the Pebble
-              overnight if possible.
+              The icon with the arrow pointing away from the wall plug
+              symbolizes the unplugging of the Pebble. The time is only reset
+              when the Pebble is plugged in and fully charged, I recommend
+              charging the Pebble overnight if possible.</br>
+              If the Pebble was not fully charged when since the watchface was
+              installed "-" is shown instead of the time.
             </div>
+          </p>
+        <h3>Battery Estimate</h3>
+          <p>
+            <div class="columns columns-col-1">
+              <img src="resources/pebble-screenshot_aplite.png"/>
+            </div>
+            <div class="columns columns-col-2">
+              The estimate is based on an algorithm that takes into account
+              several of the last discharge steps (percentage drops) and also
+              takes into account certain idiosyncracies of the Pebble
+              hardware.</br>
+              Initially (when the watchface is newly installed) a battery
+              lifetime of 5 days per charge is assumed and is refined over the
+              time the watchface is used.</br>
+              The precision of this estimate is only assured when the watchface
+              is used continually.  </div>
           </p>
       </section>
       <footer>
