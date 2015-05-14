@@ -188,9 +188,29 @@ void update_time(void) {
   // Fetch and print BlueTooth status information.
   LOG(LOG_FACEUPDATE, "updating s_info1_layer");
   text_layer_set_text(s_btlayer, bt_state_string);
+  if (bt_state) {
+    bitmap_layer_set_bitmap(s_bitmaplayer_bt, s_res_image_bt_active);
+  } else {
+    bitmap_layer_set_bitmap(s_bitmaplayer_bt, s_res_image_bt_passive);
+  }
 
   LOG(LOG_FACEUPDATE, "updating s_batterylayer");
-  text_layer_set_text(s_batterylayer, battery_state_string());
+  static char battery_state_str[6];
+  snprintf(battery_state_str, 6, "%d%%", battery_state.charge_percent);
+  text_layer_set_text(s_batterylayer, battery_state_str);
+   
+  if (storage.last_full_timestamp != -1) {
+    static stringbuffer outbound;
+    stringbuffer_init(&outbound);
+    stringbuffer_append_ti(&outbound, temp - storage.last_full_timestamp);
+    text_layer_set_text(s_outboundlayer, outbound.retval);
+  } else {
+    text_layer_set_text(s_outboundlayer, "-");
+  }
+  static stringbuffer inbound;
+  stringbuffer_init(&inbound);
+  stringbuffer_append_ti(&inbound, battery_estimate_secs);
+  text_layer_set_text(s_inboundlayer, inbound.retval);
 }
 
 static void handle_window_unload(Window* window) {
