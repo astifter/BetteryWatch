@@ -35,6 +35,7 @@ static GBitmap *s_res_image_inbound;
 static BitmapLayer *s_bitmaplayer_inbound;
 
 static void initialise_ui(void) {
+  LOG_FUNC();
   s_window = window_create();
   window_set_background_color(s_window, GColorClear);
   
@@ -137,6 +138,7 @@ static void initialise_ui(void) {
 }
 
 static void destroy_ui(void) {
+  LOG_FUNC();
   window_destroy(s_window);
   bitmap_layer_destroy(s_bitmaplayer_bg);
   text_layer_destroy(s_timelayer);
@@ -214,10 +216,12 @@ void update_time(void) {
 }
 
 static void handle_window_unload(Window* window) {
+  LOG_FUNC();
   destroy_ui();
 }
 
 void show_bettery_watch_window(void) {
+  LOG_FUNC();
   initialise_ui();
   window_set_window_handlers(s_window, (WindowHandlers) {
     .unload = handle_window_unload,
@@ -229,5 +233,6 @@ void show_bettery_watch_window(void) {
 }
 
 void hide_bettery_watch_window(void) {
+  LOG_FUNC();
   window_stack_remove(s_window, true);
 }
