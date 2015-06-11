@@ -198,8 +198,12 @@ void update_time(void) {
 
   LOG(LOG_FACEUPDATE, "updating s_batterylayer");
   static char battery_state_str[6];
-  if (battery_state.is_charging) {
-    snprintf(battery_state_str, 6, "~%d%%", battery_state.charge_percent);
+  if (battery_state.is_plugged) {
+    if (battery_state.is_charging) {
+      snprintf(battery_state_str, 6, "charging");
+    } else {
+      snprintf(battery_state_str, 6, "full");
+    }
   } else {
     snprintf(battery_state_str, 6, "%d%%", battery_state.charge_percent);
   }
@@ -210,16 +214,10 @@ void update_time(void) {
     stringbuffer_init(&outbound);
     stringbuffer_append_ti(&outbound, temp - storage.last_full_timestamp);
     text_layer_set_text(s_outboundlayer, outbound.retval);
+  } else if (battery_state.is_plugged) {
+    text_layer_set_text(s_outboundlayer, "plugged");
   } else {
-    if (battery_state.is_plugged) {
-      if (battery_state.is_charging) {
-        text_layer_set_text(s_outboundlayer, "c & p");
-      } else {
-        text_layer_set_text(s_outboundlayer, "plugged");
-      }
-    } else {
-      text_layer_set_text(s_outboundlayer, "-");
-    }
+    text_layer_set_text(s_outboundlayer, "-");
   }
   static stringbuffer inbound;
   stringbuffer_init(&inbound);
